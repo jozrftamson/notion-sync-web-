@@ -55,12 +55,21 @@ Optional flags:
 
 ```bash
 npm run sync:local -- \
-  --endpoint http://127.0.0.1:4317/api/sync \
+  --endpoint http://127.0.0.1:3000/api/sync \
   --shellFile ~/.bash_history \
   --terminalFile /path/to/terminal.log \
   --codexFile /path/to/codex.txt \
   --title "Local History Sync" \
   --userLabel josef
+```
+
+If you run the app locally with `vercel dev`, use `http://127.0.0.1:3000/api/sync` unless you configured a different port.
+
+To send directly to your deployed app, pass the production or preview URL:
+
+```bash
+npm run sync:local -- \
+  --endpoint https://your-project.vercel.app/api/sync
 ```
 
 ## Public repo safety

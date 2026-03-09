@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terminal Docs to Notion</title>
+    <link rel="stylesheet" href="/public/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="masthead">
+        <p class="kicker">Multi-User Notion Intake</p>
+        <h1>Terminal Docs to Notion</h1>
+        <p class="intro">
+          A Vercel-ready intake app for teams. Each user can paste Codex history, terminal logs, and shell notes,
+          then push a structured report into their own Notion database.
+        </p>
+      </section>
+
+      <section class="grid">
+        <article class="card card-form">
+          <div class="card-head">
+            <h2>Submission</h2>
+            <span id="state-indicator">Ready</span>
+          </div>
+          <form id="sync-form">
+            <div class="field-grid">
+              <label>
+                <span>Report Title</span>
+                <input name="title" placeholder="Daily Terminal Report" required />
+              </label>
+              <label>
+                <span>User Label</span>
+                <input name="userLabel" placeholder="josef" required />
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>
+                <span>Source</span>
+                <input name="source" placeholder="Codex CLI + Terminal" />
+              </label>
+              <label>
+                <span>Notion Title Property</span>
+                <input name="notionTitleProperty" placeholder="Name" />
+              </label>
+            </div>
+            <div class="field-grid">
+              <label>
+                <span>Notion Token</span>
+                <input name="notionToken" type="password" placeholder="ntn_..." />
+              </label>
+              <label>
+                <span>Notion Database ID</span>
+                <input name="notionDatabaseId" placeholder="31d52dde..." />
+              </label>
+            </div>
+            <label>
+              <span>Summary</span>
+              <textarea name="summary" rows="4" placeholder="What happened today?"></textarea>
+            </label>
+            <label>
+              <span>Codex History</span>
+              <textarea name="codexText" rows="8" placeholder="Paste Codex chat or session summary"></textarea>
+            </label>
+            <label>
+              <span>Terminal Logs</span>
+              <textarea name="terminalText" rows="10" placeholder="Paste terminal output"></textarea>
+            </label>
+            <label>
+              <span>Shell History</span>
+              <textarea name="shellText" rows="6" placeholder="Paste shell commands"></textarea>
+            </label>
+            <div class="toolbar">
+              <button type="submit" class="primary">Send to Notion</button>
+              <button type="button" id="load-example">Load Example</button>
+              <button type="button" id="clear-form">Clear</button>
+            </div>
+          </form>
+        </article>
+
+        <article class="card card-large">
+          <div class="card-head">
+            <h2>Result</h2>
+            <span id="command-name">idle</span>
+          </div>
+          <pre id="output-box">Fill the form and submit to create a Notion page.</pre>
+        </article>
+      </section>
+    </main>
+
+    <script src="/public/app.js"></script>
+  </body>
+</html>

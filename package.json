@@ -5,6 +5,7 @@
   "type": "commonjs",
   "scripts": {
     "start": "vercel dev",
-    "sync:local": "node scripts/local-sync.js"
+    "sync:local": "node scripts/local-sync.js",
+    "test": "node tests/api.test.js"
   }
 }

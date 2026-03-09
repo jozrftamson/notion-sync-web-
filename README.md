@@ -1,6 +1,25 @@
-# Terminal Docs to Notion + GitHub API
+# Terminal Docs to Notion
 
-Vercel-compatible multi-user intake app for sending terminal and Codex documentation to Notion, with a small GitHub API helper endpoint for authenticated user and repository checks.
+Terminal Docs to Notion is a Vercel-ready intake app for turning terminal activity, Codex sessions, and shell notes into clean Notion documentation.
+
+It works well for:
+- teams that want a shared browser-based intake workflow
+- individuals who want a clean Notion page from pasted session notes
+- hybrid setups where a local CLI posts into a hosted central API
+
+This repo also includes an optional GitHub API helper endpoint for repository metadata checks.
+
+## Live app
+
+- `https://skill-deploy-4bubl7vj6c.vercel.app`
+
+## Highlights
+
+- Vercel-compatible static UI plus serverless API routes
+- direct Notion page creation via `/api/sync`
+- optional GitHub metadata lookup via `/api/github`
+- secret masking before content is written to Notion
+- compatible with the local `notion-sync` CLI remote mode
 
 ## How it works
 
@@ -22,6 +41,28 @@ Vercel-compatible multi-user intake app for sending terminal and Codex documenta
 - `scripts/local-sync.js`: local CLI uploader for shell history or other local files
 - `vercel.json`: Vercel config
 
+## Quickstart
+
+### Browser intake
+
+1. Open the deployed app
+2. Fill in title, user label, summary, and log content
+3. Provide a Notion token and database ID, or rely on server-side env vars
+4. Submit to create a page in Notion
+
+### Local development
+
+```bash
+cd notion-sync-web
+vercel dev
+```
+
+Then open:
+
+```text
+http://127.0.0.1:3000
+```
+
 ## Deploy to Vercel
 
 1. Push this folder to GitHub.
@@ -35,6 +76,9 @@ Vercel-compatible multi-user intake app for sending terminal and Codex documenta
    - `GITHUB_OWNER`
    - `GITHUB_REPO`
 5. Deploy.
+
+Repository:
+- `https://github.com/jozrftamson/notion-sync-web-`
 
 ## Important limits
 
@@ -71,6 +115,18 @@ To send directly to your deployed app, pass the production or preview URL:
 npm run sync:local -- \
   --endpoint https://your-project.vercel.app/api/sync
 ```
+
+## Screenshots
+
+Suggested screenshots for the repository:
+- landing page with intake form
+- successful sync result panel
+- GitHub API helper panel
+
+Recommended asset paths:
+- `docs/screenshots/web-home.png`
+- `docs/screenshots/web-sync-result.png`
+- `docs/screenshots/web-github-panel.png`
 
 ## Public repo safety
 

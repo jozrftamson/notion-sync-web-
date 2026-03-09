@@ -26,6 +26,10 @@ module.exports = async function handler(req, res) {
       shellText: sanitizeText(body.shellText || ""),
     };
 
+    if (!sanitized.summary && !sanitized.codexText && !sanitized.terminalText && !sanitized.shellText) {
+      throw new Error("Nothing to sync. Provide summary, Codex text, terminal logs, or shell history.");
+    }
+
     const blocks = buildBlocks(sanitized);
     const page = await notionRequest("/v1/pages", notionToken, {
       method: "POST",
@@ -54,6 +58,7 @@ module.exports = async function handler(req, res) {
       ok: true,
       pageId: page.id,
       url: getNotionPageUrl(page.id),
+      syncedAt: new Date().toISOString(),
     });
   } catch (error) {
     return res.status(400).json({

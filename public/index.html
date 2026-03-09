@@ -9,12 +9,28 @@
   <body>
     <main class="shell">
       <section class="masthead">
-        <p class="kicker">Multi-User Notion Intake</p>
-        <h1>Terminal Docs to Notion</h1>
-        <p class="intro">
-          A Vercel-ready intake app for teams. Each user can paste Codex history, terminal logs, and shell notes,
-          then push a structured report into their own Notion database.
-        </p>
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <p class="kicker">Multi-User Notion Intake</p>
+            <h1>Terminal Docs to Notion</h1>
+            <p class="intro">
+              A Vercel-ready intake app for teams. Each user can paste Codex history, terminal logs, and shell notes,
+              then push a structured report into their own Notion database without exposing raw machine access.
+            </p>
+            <div class="hero-ribbon">
+              <span>serverless api</span>
+              <span>secret masking</span>
+              <span>bring your own notion</span>
+            </div>
+          </div>
+          <aside class="hero-art">
+            <img src="/public/brand-mark.svg" alt="Terminal Docs to Notion mark" />
+            <div class="hero-art-copy">
+              <strong>Built for handoff</strong>
+              <p>From local terminal history to polished documentation flow, with a clean path into Notion and GitHub-backed deployment.</p>
+            </div>
+          </aside>
+        </div>
       </section>
 
       <section class="grid">
@@ -72,8 +88,13 @@
             </label>
             <div class="toolbar">
               <button type="submit" class="primary">Send to Notion</button>
+              <button type="button" id="load-github">Check GitHub</button>
               <button type="button" id="load-example">Load Example</button>
               <button type="button" id="clear-form">Clear</button>
+            </div>
+            <div class="note-strip">
+              <span>Paste only the summary you want to preserve.</span>
+              <span>Server sanitizes common secrets before writing to Notion.</span>
             </div>
           </form>
         </article>
@@ -84,6 +105,35 @@
             <span id="command-name">idle</span>
           </div>
           <pre id="output-box">Fill the form and submit to create a Notion page.</pre>
+        </article>
+
+        <article class="card card-side">
+          <div class="card-head">
+            <h2>GitHub API</h2>
+            <span>Optional</span>
+          </div>
+          <label>
+            <span>GitHub Owner</span>
+            <input name="githubOwner" form="sync-form" placeholder="octocat" />
+          </label>
+          <label>
+            <span>GitHub Repo</span>
+            <input name="githubRepo" form="sync-form" placeholder="Hello-World" />
+          </label>
+          <p class="intro">
+            Calls <code>/api/github</code> using the server-side <code>GITHUB_TOKEN</code> and returns the
+            authenticated user plus optional repository metadata if owner and repo are set.
+          </p>
+          <div class="side-stack">
+            <div class="side-block">
+              <strong>Best for teams</strong>
+              <p>Use project env vars for shared org repos and let users bring only their report content.</p>
+            </div>
+            <div class="side-block">
+              <strong>Best for individuals</strong>
+              <p>Paste a private Notion token and database ID only for the session, then clear the form.</p>
+            </div>
+          </div>
         </article>
       </section>
     </main>

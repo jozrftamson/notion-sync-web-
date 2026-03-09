@@ -4,6 +4,7 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "start": "vercel dev"
+    "start": "vercel dev",
+    "sync:local": "node scripts/local-sync.js"
   }
 }

@@ -6,6 +6,6 @@
   "scripts": {
     "start": "vercel dev",
     "sync:local": "node scripts/local-sync.js",
-    "test": "node tests/api.test.js"
+    "test": "node tests/api.test.js && node tests/local-sync.test.js"
   }
 }

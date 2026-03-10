@@ -11,6 +11,9 @@ module.exports = async function handler(req, res) {
     const notionToken = body.notionToken || process.env.NOTION_TOKEN;
     const notionDatabaseId = body.notionDatabaseId || process.env.NOTION_DATABASE_ID;
     const titleProperty = body.notionTitleProperty || process.env.NOTION_TITLE_PROPERTY || "Name";
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_KEY;
+    const supabaseTable = process.env.SUPABASE_TABLE || "session_exports";
 
     if (!notionToken || !notionDatabaseId) {
       throw new Error("Missing Notion credentials. Provide token and database ID.");
@@ -54,10 +57,31 @@ module.exports = async function handler(req, res) {
       });
     }
 
+    let supabase = null;
+    if (supabaseUrl && supabaseKey) {
+      supabase = await insertSupabaseRow(
+        {
+          title: sanitized.title,
+          userLabel: sanitized.userLabel,
+          source: sanitized.source,
+          summary: sanitized.summary,
+          codexText: sanitized.codexText,
+          terminalText: sanitized.terminalText,
+          shellText: sanitized.shellText,
+        },
+        {
+          url: supabaseUrl,
+          key: supabaseKey,
+          table: supabaseTable,
+        }
+      );
+    }
+
     return res.status(200).json({
       ok: true,
       pageId: page.id,
       url: getNotionPageUrl(page.id),
+      supabase,
       syncedAt: new Date().toISOString(),
     });
   } catch (error) {
@@ -170,4 +194,66 @@ async function notionRequest(endpoint, token, options) {
 
 function getNotionPageUrl(pageId) {
   return `https://www.notion.so/${pageId.replace(/-/g, "")}`;
+}
+
+async function insertSupabaseRow(data, config) {
+  const row = {
+    user_label: data.userLabel,
+    source_type: "intake",
+    title: data.title,
+    summary: data.summary,
+    content_markdown: buildSupabaseMarkdown(data),
+    content_text: [data.summary, data.codexText, data.terminalText, data.shellText].filter(Boolean).join("\n\n"),
+    destination: "supabase",
+    export_type: "single",
+    session_count: 1,
+    source_paths: [],
+    metadata: {
+      source: data.source,
+    },
+  };
+
+  const response = await fetch(`${config.url}/rest/v1/${config.table}`, {
+    method: "POST",
+    headers: {
+      apikey: config.key,
+      Authorization: `Bearer ${config.key}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(row),
+  });
+
+  const payload = await response.json().catch(() => []);
+  if (!response.ok) {
+    const message = Array.isArray(payload) ? JSON.stringify(payload) : payload.message || JSON.stringify(payload);
+    throw new Error(`Supabase request failed (${response.status}): ${message}`);
+  }
+
+  const inserted = Array.isArray(payload) ? payload[0] || {} : payload;
+  return {
+    rowId: inserted.id || null,
+    table: config.table,
+  };
+}
+
+function buildSupabaseMarkdown(data) {
+  return [
+    `# ${data.title}`,
+    ``,
+    `User: ${data.userLabel}`,
+    `Source: ${data.source}`,
+    ``,
+    `## Summary`,
+    data.summary || "No summary provided.",
+    ``,
+    `## Codex History`,
+    data.codexText || "No Codex content provided.",
+    ``,
+    `## Terminal Logs`,
+    data.terminalText || "No terminal log content provided.",
+    ``,
+    `## Shell History`,
+    data.shellText || "No shell history provided.",
+  ].join("\n");
 }

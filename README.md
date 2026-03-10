@@ -17,6 +17,7 @@ This repo also includes an optional GitHub API helper endpoint for repository me
 
 - Vercel-compatible static UI plus serverless API routes
 - direct Notion page creation via `/api/sync`
+- optional parallel Supabase row creation via `/api/sync`
 - optional GitHub metadata lookup via `/api/github`
 - secret masking before content is written to Notion
 - compatible with the local `notion-sync` CLI remote mode
@@ -72,6 +73,9 @@ http://127.0.0.1:3000
    - `NOTION_TOKEN`
    - `NOTION_DATABASE_ID`
    - `NOTION_TITLE_PROPERTY`
+   - `SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY` or `SUPABASE_KEY`
+   - `SUPABASE_TABLE`
    - `GITHUB_TOKEN`
    - `GITHUB_OWNER`
    - `GITHUB_REPO`

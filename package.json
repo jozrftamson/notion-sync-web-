@@ -3,6 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "type": "commonjs",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/jozrftamson"
+  },
   "scripts": {
     "start": "vercel dev",
     "sync:local": "node scripts/local-sync.js",

@@ -84,6 +84,9 @@ http://127.0.0.1:3000
 Repository:
 - `https://github.com/jozrftamson/notion-sync-web-`
 
+Support / Sponsor:
+- `https://github.com/sponsors/jozrftamson`
+
 ## Important limits
 
 - Vercel cannot read a user's local `.codex` or terminal files directly.
